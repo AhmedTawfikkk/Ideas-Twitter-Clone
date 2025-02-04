@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/AhmedTawfikkk/Ideas-twitter-clone.git" target="_blank">
-    <img src="public/git-assets/ideas-high-resolution-logo-transparent.png" width="400" alt="Ideas">
+    <img src="public/ideas-high-resolution-logo-transparent.png" width="400" alt="Ideas">
   </a>
 </p>
 
