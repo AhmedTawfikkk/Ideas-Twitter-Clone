@@ -3,9 +3,10 @@
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
                 <img style="width:50px" class="me-2 avatar-sm rounded-circle"
-                    src="https://api.dicebear.com/6.x/fun-emoji/svg?seed=Mario" alt="Mario Avatar">
+                    src="https://api.dicebear.com/6.x/fun-emoji/svg?seed= {{$idea->user->name}}"
+                    alt=" {{$idea->user->name}}">
                 <div>
-                    <h5 class="card-title mb-0"><a href="#"> Mario
+                    <h5 class="card-title mb-0"><a href="#"> {{$idea->user->name}}
                         </a></h5>
                 </div>
             </div>
@@ -13,18 +14,21 @@
                 <form method="Post" action={{Route('ideas.destroy', $idea->id)}}>
                     @method('DELETE')
                     @CSRF
-                    <a class="mx-2" href="{{route('ideas.edit', $idea->id)}}">Edit</a>
+                    @if (auth()->id() === $idea->user_id)
+                        <a class="mx-2" href="{{route('ideas.edit', $idea->id)}}">Edit</a>
+                        <button class="ms-1 btn btn-danger btn-sm">Delete</button>
+                    @endif
                     <a href="{{route('ideas.show', $idea->id)}}">View</a>
-                    <button class="ms-1 btn btn-danger btn-sm">Delete</button>
+
                 </form>
 
             </div>
         </div>
     </div>
     <div class="card-body">
-        @if ($editing??false)
+        @if ($editing ?? false)
 
-            <form action="{{route('ideas.update',$idea->id)}}" method="post">
+            <form action="{{route('ideas.update', $idea->id)}}" method="post">
                 @method('put')
                 @csrf
                 <div class="mb-3">
@@ -37,7 +41,6 @@
                     <button type="submit" class="btn btn-dark mb-2 btn-sm"> Update </button>
                 </div>
             </form>
-
         @else
             <p class="fs-6 fw-light text-muted">
                 {{$idea->content}}
@@ -54,6 +57,6 @@
                     {{$idea->created_at}} </span>
             </div>
         </div>
-       @include('shared.comments-box')
+        @include('shared.comments-box')
     </div>
 </div>
