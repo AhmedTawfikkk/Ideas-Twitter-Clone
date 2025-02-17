@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function index()
     {
         
-       $ideas=idea::orderBy('created_at','desc');
+       $ideas=idea::with('user','comments.user')->orderBy('created_at','desc');
        if(Request()->has('search')){
         $ideas=$ideas->where('content','like','%'.request()->get('search').'%');
        }
