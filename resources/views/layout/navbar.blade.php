@@ -10,15 +10,15 @@
                 <ul class="navbar-nav">
                     @guest()
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{Route('login')}}">Login</a>
+                    <a class="{{Route::is('login')?'active':'' }} nav-link" href="{{Route('login')}}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{Route('register')}}">Register</a>
+                        <a class="{{Route::is('register')?'active':'' }} nav-link" href="{{Route('register')}}">Register</a>
                     </li>
                     @endguest
                     @auth()
                     <li class="nav-item">
-                        <a class="nav-link" href="{{Route('profile')}}">{{Auth::user()->name}}</a>
+                        <a class="{{Route::is('profile')?'active':'' }} nav-link" href="{{Route('profile')}}">{{Auth::user()->name}}</a>
                     </li>
                     <li class="nav-item">
                         <form action="{{route('logout')}}" method="post">
