@@ -3,10 +3,13 @@
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
                 <img style="width:150px" class="me-3 avatar-sm rounded-circle"
-                    src="https://api.dicebear.com/6.x/fun-emoji/svg?seed=Mario" alt="Mario Avatar">
+                    src="{{$user->GetImageUrl()}}" alt="Mario Avatar">
                 <div>
                     @if ($editing ?? false)
-                        <input value="{{$user->name}}" type="text" class="form-control">
+                        <input name="user" value="{{$user->name}}" type="text" class="form-control">
+                        @error('name')
+                        <span class="text-danger fs-6">{{$message}}</span>
+                        @enderror
                     @else
                         <h3 class="card-title mb-0"><a href="#"> {{$user->name}}
                             </a></h3>
@@ -22,6 +25,12 @@
                 @endauth
             </div>
         </div>
+        @if ($editing ?? false)
+        <div class="mt-4">
+            <label for="">Profile picture</label>
+            <input type="file" name="image" class="form-control">
+        </div>
+        @endif
         <div class="px-2 mt-4">
             <h5 class="fs-5"> Bio : </h5>
             @if ($editing ?? false)
@@ -36,9 +45,7 @@
 
             @else
                 <p class="fs-6 fw-light">
-                    This book is a treatise on the theory of ethics, very popular during the
-                    Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes
-                    from a line in section 1.10.32.
+                    {{$user->bio}}
                 </p>
             @endif
             <div class="d-flex justify-content-start">
@@ -52,7 +59,18 @@
             @auth
                 @if(Auth::id() !== $user->id)
                     <div class="mt-3">
-                        <button class="btn btn-primary btn-sm"> Follow </button>
+                        @if (Auth::user()->follows($user))
+                        <form method="post" action="{{route('users.unfollow',$user->id)}}">
+                            @csrf
+                        <button type="submit" class="btn btn-danger btn-sm"> UnFollow </button>
+                        </form>
+                        @else
+                        <form method="post" action="{{route('users.follow',$user->id)}}">
+                            @csrf
+                        <button type="submit" class="btn btn-primary btn-sm"> Follow </button>
+                        </form>
+                        @endif
+                        
                     </div>
                 @endif
             @endauth

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+use Auth;
+use Storage;
 
 class UserController extends Controller
 {
@@ -23,8 +24,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $ideas=$user->ideas()->paginate(5);
-        $editing=true;
-        return view('users.show',compact('user','editing','ideas'));
+        return view('users.edit',compact('user','ideas'));
     }
 
     /**
@@ -32,7 +32,24 @@ class UserController extends Controller
      */
     public function update(User $user)
     {
-        return view('users.update',compact('user'));
+       $validated=request()->validate(
+        [
+            'name'=>'nullable|min:3|max:40',
+            'bio'=>'nullable|min:3|max:255',
+            'image'=>'image'
+        ]
+    );
+    if(request()->has('image'))
+    {
+        $imagepath=request()->file('image')->store('profile','public');
+        $validated['image']=$imagepath;
+        Storage::disk('public')->delete($user->image??'');
+    }
+        $user->update($validated);
+        return redirect()->route('profile');
     }
 
+    public function profile(){
+        return $this->show(Auth::user());
+    }
 }
