@@ -1,4 +1,6 @@
-@extends('layout.layout')
+@extends('layout.app')
+
+@section('title','Dashboard')  
 
 @section('content')
 
@@ -9,11 +11,11 @@
     </div>
     <div class="col-6">
         @include('Shared.success-message')
-        @include('Shared.idea-submit')
+        @include('ideas.Shared.idea-submit')
         <hr>
         @forelse ($ideas as $idea)
             <div class="mt-3">
-                @include('shared.idea-card')
+                @include('ideas.shared.idea-card')
             </div>
         @empty
             <p class="text-center my-3">No Results Found.</p>
