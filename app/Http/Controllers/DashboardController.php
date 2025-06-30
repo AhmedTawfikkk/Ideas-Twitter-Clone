@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\idea;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        
-       $ideas=idea::with('user','comments.user')->orderBy('created_at','desc');
-       if(Request()->has('search')){
-        $ideas=$ideas->where('content','like','%'.request()->get('search').'%');
-       }
+      
+       $ideas=idea::when(Request()->has('search'),function($query){   // like if statement but can be chained
+        $query->search(request('search'));  //search scope
+       })->orderBy('created_at','desc')->paginate(5);
+
         return view('dashboard',[
-            'ideas'=>$ideas->paginate(5)
+            'ideas'=>$ideas
         ]);
     }
 }
