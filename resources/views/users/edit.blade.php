@@ -1,7 +1,8 @@
-@extends('layout.layout')
+@extends('layout.app')
+
+@section('title','Edit Profile')  
 
 @section('content')
-
 
 <div class="row">
     <div class="col-3">
@@ -10,11 +11,11 @@
     <div class="col-6">
         @include('Shared.success-message')
         <div class="mt-3">
-            @include('shared.user-edit-card')
+            @include('users.shared.user-edit-card')
         </div>
         @forelse ($ideas as $idea)
             <div class="mt-3">
-                @include('shared.idea-card')
+                @include('ideas.shared.idea-card')
             </div>
         @empty
             <p class="text-center my-3">No Results Found.</p>
